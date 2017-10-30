@@ -1,4 +1,2 @@
-out/
-.idea/
-*.iml
-*.class
+*.avm
+.DS_Store

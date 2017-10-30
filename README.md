@@ -7,6 +7,9 @@
 ```
 make build
 ```
+```
+make compile
+```
 
 ---
 
