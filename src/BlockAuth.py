@@ -1,80 +1,102 @@
-# v0.1.0
-# Author: @revett
+"""
+BlockAuth smart contract, written in Python and compiled using neo-boa.
+v0.2.0
+https://blockauth.cc
+"""
 
-from boa.blockchain.vm.Neo.Output import GetScriptHash
-from boa.blockchain.vm.Neo.Storage import GetContext, Put
-from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer
+from boa.blockchain.vm.Neo.Output import GetScriptHash as get_script_hash
+from boa.blockchain.vm.Neo.Storage import GetContext as get_storage_context
+from boa.blockchain.vm.Neo.Storage import Put as storage_put
+from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer as get_script_container
 from boa.code.builtins import concat
 
-# Main is the entry point to the smart contract.
-# --
-# @param {string} verification_values - string holding a GUID and a challenge value.
-# @return {boolean} - true or false to if the smart contract succeeded.
-def Main(verification_values):
-    # Verify length of input argument is valid
+def main(verification_values):
+    """
+        main() is the entry point for the smart contract.
+
+        Args:
+            verification_values (string): string holding a GUID and a challenge value.
+        Return:
+            (boolean): true or false to if the smart contract succeeded.
+    """
+
     if len(verification_values) != 46:
         return False
 
-    # Extract and verify the application GUID
     app_guid = verification_values[0:36]
-    if not IsGUID(app_guid):
+    if not is_guid(app_guid):
         return False
 
-    # Extract and verify the challenge string
     challenge = verification_values[37:46]
-    if not IsChallenge(challenge):
+    if not is_challenge(challenge):
         return False
 
-    # Fetch sender public address, and check if blank value (error) is returned
-    public_address = GetPublicAddress()
+    public_address = get_public_address()
     if public_address == '':
         return False
 
-    # Populate values needed for storage.Put() function call
-    context = GetContext()
-    key = GenerateKey(app_guid, public_address)
+    context = get_storage_context()
+    key = generate_key(app_guid, public_address)
 
-    # Store value, and return
-    Put(context, key, challenge)
+    storage_put(context, key, challenge)
     return True
 
-# GenerateKey takes two strings as arguments, concatenates each values together to form
-# a single string to return. This value is used as the storage key.
-# --
-# @param {string} app_guid - application GUID taken from smart contract argument.
-# @param {string} public_address - public NEO address of who invoked smart contract.
-# @return {string} - both arguments concatenated together with a '.' between each value.
-def GenerateKey(app_guid, public_address):
+def generate_key(app_guid, public_address):
+    """
+        generate_key() concatenates each argument (strings) together to form a single
+        string, which is then used as the storage key.
+
+        Args:
+            app_guid       (string): application GUID taken from smart contract argument.
+            public_address (string): public NEO address of who invoked smart contract.
+        Return:
+            (string): both arguments concatenated together with a '.' between each value.
+    """
+
     with_period = concat(app_guid, '.')
     return concat(with_period, public_address)
 
-# GetPublicAddress retrieves the NEO public address of the user who invoked the smart
-# contract.
-# --
-# @return {string} - public NEO address corresponding to who invoked the smart contract.
-def GetPublicAddress():
-    transaction = GetScriptContainer()
+def get_public_address():
+    """
+        get_public_address() retrieves the NEO public address of the user who invoked the
+        smart contract.
+
+        Return:
+            (string): public NEO address corresponding to who invoked the smart contract.
+    """
+
+    transaction = get_script_container()
     references = transaction.References
 
     if len(references) < 1:
         return ""
 
     reference = references[0]
-    return GetScriptHash(reference)
+    return get_script_hash(reference)
 
-# IsChallenge verifies that a string has the following format: 'xxxx-xxxx'.
-# --
-# @param {string} challenge - value that needs to be verified.
-# @return {boolean} - true or false to if the value is valid.
-def IsChallenge(challenge):
+def is_challenge(challenge):
+    """
+        is_challenge() verifies that a string has the following format: 'xxxx-xxxx'.
+
+        Args:
+            challenge (string): value that needs to be verified.
+        Return:
+            (boolean): true or false to if the value is valid.
+    """
+
     return len(challenge) == 9 and challenge[4:5] == '-'
 
-# IsGUID verifies that a string has the following (GUID) format:
-# 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-# --
-# @param {string} guid - value that needs to be verified.
-# @return {boolean} - true or false to if the value is valid.
-def IsGUID(guid):
+def is_guid(guid):
+    """
+        is_guid() verifies that a string has the following (GUID) format:
+        'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
+
+        Args:
+            guid (string): value that needs to be verified.
+        Return:
+            (boolean): true or false to if the value is valid.
+    """
+
     if len(guid) != 36:
         return False
 
