@@ -4,20 +4,22 @@ v0.2.0
 https://blockauth.cc
 """
 
-from boa.blockchain.vm.Neo.Output import GetScriptHash as get_script_hash
-from boa.blockchain.vm.Neo.Storage import GetContext as get_storage_context
-from boa.blockchain.vm.Neo.Storage import Put as storage_put
-from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer as get_script_container
+from boa.blockchain.vm.Neo.Output import GetScriptHash
+from boa.blockchain.vm.Neo.Storage import GetContext as GetStorageContext
+from boa.blockchain.vm.Neo.Storage import Put as StoragePut
+from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer
 from boa.code.builtins import concat
 
-def main(verification_values):
-    """
-        main() is the entry point for the smart contract.
 
-        Args:
-            verification_values (string): string holding a GUID and a challenge value.
-        Return:
-            (boolean): true or false to if the smart contract succeeded.
+def main(verification_values: str) -> bool:
+    """Entry point for the smart contract.
+
+    Args:
+        verification_values (str):
+            string holding a GUID and a challenge value.
+
+    Return:
+        (boolean): true or false to if the smart contract succeeded.
     """
 
     if len(verification_values) != 46:
@@ -35,66 +37,72 @@ def main(verification_values):
     if public_address == '':
         return False
 
-    context = get_storage_context()
+    context = GetStorageContext()
     key = generate_key(app_guid, public_address)
 
-    storage_put(context, key, challenge)
+    StoragePut(context, key, challenge)
     return True
 
-def generate_key(app_guid, public_address):
-    """
-        generate_key() concatenates each argument (strings) together to form a single
-        string, which is then used as the storage key.
 
-        Args:
-            app_guid       (string): application GUID taken from smart contract argument.
-            public_address (string): public NEO address of who invoked smart contract.
-        Return:
-            (string): both arguments concatenated together with a '.' between each value.
+def generate_key(app_guid, public_address: str) -> str:
+    """Concatenate arguments for use as storage key.
+
+    Args:
+        app_guid       (str):
+            application GUID taken from smart contract argument.
+
+        public_address (str):
+            public NEO address of who invoked smart contract.
+
+    Return:
+        (str): args concatenated together with a '.' between each value.
     """
 
     with_period = concat(app_guid, '.')
     return concat(with_period, public_address)
 
-def get_public_address():
-    """
-        get_public_address() retrieves the NEO public address of the user who invoked the
-        smart contract.
 
-        Return:
-            (string): public NEO address corresponding to who invoked the smart contract.
+def get_public_address() -> str:
+    """Retrieves NEO public address of user who invoked the smart contract.
+    
+    Return:
+        (str): NEO public address, or empty if error.
     """
 
-    transaction = get_script_container()
+    transaction = GetScriptContainer()
     references = transaction.References
 
     if len(references) < 1:
         return ""
 
     reference = references[0]
-    return get_script_hash(reference)
+    return GetScriptHash(reference)
 
-def is_challenge(challenge):
-    """
-        is_challenge() verifies that a string has the following format: 'xxxx-xxxx'.
 
-        Args:
-            challenge (string): value that needs to be verified.
-        Return:
-            (boolean): true or false to if the value is valid.
+def is_challenge(challenge: str) -> bool:
+    """Verifies a string has the following format: 'xxxx-xxxx'.
+
+    Args:
+        challenge (str): 
+            value that needs to be verified.
+
+    Return:
+        (boolean): true or false to if the value is valid.
     """
 
     return len(challenge) == 9 and challenge[4:5] == '-'
 
-def is_guid(guid):
-    """
-        is_guid() verifies that a string has the following (GUID) format:
+
+def is_guid(guid: str) -> bool:
+    """Verifies a string has the following (GUID) format:
         'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
 
-        Args:
-            guid (string): value that needs to be verified.
-        Return:
-            (boolean): true or false to if the value is valid.
+    Args:
+        guid (str): 
+            value that needs to be verified.
+
+    Return:
+        (boolean): true or false to if the value is valid.
     """
 
     if len(guid) != 36:
