@@ -38,7 +38,7 @@ The smart contract takes two arguments:
   - NEO parameter value: `07`
   - Example: `AXcQE8W8RzazrB8yq4nfUio8eusRLfSHCF`
 
-## Error codes
+## Error Codes
 
 The smart contract returns a single **integer** value, which repesents if the 
 invocation was a success. The following values can occur:
