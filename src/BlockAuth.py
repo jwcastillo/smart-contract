@@ -1,85 +1,71 @@
 """
-BlockAuth smart contract, written in Python and compiled using neo-boa.
-v0.2.0
-https://blockauth.cc
+BlockAuth smart contract v0.3.0 - https://blockauth.cc
 """
 
-from boa.blockchain.vm.Neo.Output import GetScriptHash
-from boa.blockchain.vm.Neo.Storage import GetContext as GetStorageContext
-from boa.blockchain.vm.Neo.Storage import Put as StoragePut
-from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer
+from boa.blockchain.vm.Neo.Runtime import Log, CheckWitness
+from boa.blockchain.vm.Neo.Storage import Put, GetContext
 from boa.code.builtins import concat
 
-
-def main(verification_values: str) -> bool:
+def Main(verification_values: str, address: str) -> int:
     """Entry point for the smart contract.
 
     Args:
         verification_values (str):
             string holding a GUID and a challenge value.
+        address             (str):
+            NEO address of sender.
 
     Return:
         (boolean): true or false to if the smart contract succeeded.
     """
 
     if len(verification_values) != 46:
-        return False
+        Log("Parameter must be 46 characters long")
+        Log(verification_values)
+        return 101
 
-    app_guid = verification_values[0:36]
-    if not is_guid(app_guid):
-        return False
+    guid = verification_values[0:36]
+    if not IsGUID(guid):
+        Log("Parameter first part must be a valid GUID")
+        Log(guid)
+        return 102
 
     challenge = verification_values[37:46]
-    if not is_challenge(challenge):
-        return False
+    if not IsChallenge(challenge):
+        Log("Parameter second part must be a valid challenge")
+        Log(challenge)
+        return 103
 
-    public_address = get_public_address()
-    if public_address == '':
-        return False
+    from_is_sender = CheckWitness(address)
+    if not from_is_sender:
+        Log("Address parameter does not match sender address")
+        Log(address)
+        return 104
 
-    context = GetStorageContext()
-    key = generate_key(app_guid, public_address)
+    context = GetContext()
+    key = GenerateKey(guid, address)
 
-    StoragePut(context, key, challenge)
-    return True
+    Put(context, key, challenge)
 
+    return 200
 
-def generate_key(app_guid, public_address: str) -> str:
+def GenerateKey(guid, address: str) -> str:
     """Concatenate arguments for use as storage key.
 
     Args:
-        app_guid       (str):
-            application GUID taken from smart contract argument.
-
-        public_address (str):
+        guid    (str):
+            GUID taken from smart contract argument.
+        address (str):
             public NEO address of who invoked smart contract.
 
     Return:
         (str): args concatenated together with a '.' between each value.
     """
 
-    with_period = concat(app_guid, '.')
-    return concat(with_period, public_address)
+    with_period = concat(guid, '.')
+    return concat(with_period, address)
 
-
-def get_public_address() -> str:
-    """Retrieves NEO public address of user who invoked the smart contract.
-    
-    Return:
-        (str): NEO public address, or empty if error.
-    """
-
-    transaction = GetScriptContainer()
-    references = transaction.References
-
-    if len(references) < 1:
-        return ""
-
-    reference = references[0]
-    return GetScriptHash(reference)
-
-
-def is_challenge(challenge: str) -> bool:
+def IsChallenge(challenge: str) -> bool:
     """Verifies a string has the following format: 'xxxx-xxxx'.
 
     Args:
@@ -90,10 +76,30 @@ def is_challenge(challenge: str) -> bool:
         (boolean): true or false to if the value is valid.
     """
 
-    return len(challenge) == 9 and challenge[4:5] == '-'
+    if len(challenge) != 9:
+        return False
 
+    if not IsDash(challenge, 4):
+        return False 
 
-def is_guid(guid: str) -> bool:
+    return True
+
+def IsDash(s: str, index: int) -> bool:
+    """Verifies that character at index of string is '-'.
+
+    Args:
+        s     (str): 
+            string to be examined.
+        index (int):
+            starting index of the possible '-' character.
+
+    Return:
+        (boolean): true or false to if the value is valid.
+    """
+
+    return s[index:index + 1] == '-'
+
+def IsGUID(guid: str) -> bool:
     """Verifies a string has the following (GUID) format:
         'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.
 
@@ -108,9 +114,16 @@ def is_guid(guid: str) -> bool:
     if len(guid) != 36:
         return False
 
-    dash_indexes = [8, 13, 18, 23]
-    for dash_index in dash_indexes:
-        if guid[dash_index:dash_index+1] != '-':
-            return False
+    if not IsDash(guid, 8):
+        return False
+
+    if not IsDash(guid, 13):
+        return False
+
+    if not IsDash(guid, 18):
+        return False
+
+    if not IsDash(guid, 23):
+        return False
 
     return True
