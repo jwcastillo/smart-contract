@@ -1,6 +1,6 @@
 <p align="center">
   <img 
-    src="https://cdn.dribbble.com/users/1150751/screenshots/3560077/circle19.gif" 
+    src="https://res.cloudinary.com/vidsy/image/upload/v1509658596/circle19_viaray.gif" 
     width="300px"
   >
 </p>
