@@ -29,25 +29,32 @@ make compile
 
 The smart contract takes two arguments:
 
-- **verification_values**: a GUID and a challenge value, joined by a period.
-  - string
-  - NEO parameter value: `07`
-  - Example: `ae6d0adc-5168-4cc4-8ba0-741380e68e35.2843-3583`
-- **address**: NEO public address of sender.
-  - string
-  - NEO parameter value: `07`
-  - Example: `AXcQE8W8RzazrB8yq4nfUio8eusRLfSHCF`
+1. **key**: a UUID, used in the Storage key.
+    - string
+    - NEO parameter value: `07`
+    - Example: `50801e46-a161-4297-8771-61dbebe9f19d`
+2. **challenge**: a UUID, used both in the Storage key and value.
+    - string
+    - NEO parameter value: `07`
+    - Example: `f88d2cda-2da2-4c6a-95d5-b31f06433604`
 
 ## Error Codes
 
-The smart contract returns a single **integer** value, which repesents if the 
+The smart contract returns an **integer** (parameter value `02`), which repesents if the 
 invocation was a success. The following values can occur:
 
 - `200` - Success.
-- `101` - Error, as **verification_values** parameter is invalid.
-- `102` - Error, as GUID (first part) in **verification_values** parameter is invalid.
-- `103` - Error, as challenge value (second part) in **verification_values** parameter is invalid.
-- `104` - Error, as **address** parameter does not match the NEO public address of the sender.
+- `101` - Error, as **key** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
+- `102` - Error, as **challenge** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
+
+## Testing
+
+The smart contract can be tested locally using 
+[neo-python](https://github.com/CityOfZion/neo-python). The following command can be used:
+
+```
+build /path/to/blockauth/smart-contract/src/BlockAuth.py test 0707 02 True ae6d0adc-5168-4cc4-8ba0-741380e68e35 f88d2cda-2da2-4c6a-95d5-b31f06433604
+```
 
 ---
 
