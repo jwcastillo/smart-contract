@@ -14,7 +14,11 @@
 
 ## Contract Address
 
-The smart contract has not yet been deployed to the NEO TestNet.
+Please see [releases](https://github.com/blockauth/smart-contract/releases) for full details:
+
+```
+5e4011a7c98a204bfe86e37f59ec278de85a75cb
+```
 
 ## Compile
 
