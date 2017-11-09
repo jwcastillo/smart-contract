@@ -12,6 +12,12 @@
   <a href="https://blockauth.cc">BlockAuth</a>.
 </p>
 
+<p align="center">
+  <a href="https://github.com/blockauth/smart-contract/releases">
+    <img src="https://img.shields.io/github/tag/blockauth/smart-contract.svg?style=flat">
+  </a>
+</p>
+
 ## Contract Address
 
 Please see [releases](https://github.com/blockauth/smart-contract/releases) for full details:
