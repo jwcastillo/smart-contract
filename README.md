@@ -23,7 +23,7 @@
 Please see [releases](https://github.com/blockauth/smart-contract/releases) for full details:
 
 ```
-5e4011a7c98a204bfe86e37f59ec278de85a75cb
+8e3003c42c2785ff05ff706e77bf64e1ab38eff1
 ```
 
 ## Compile
@@ -56,6 +56,7 @@ invocation was a success. The following values can occur:
 - `200` - Success.
 - `101` - Error, as **key** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
 - `102` - Error, as **challenge** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
+- `103` - Error, the hash of the current transaction is invalid.
 
 ## Testing
 

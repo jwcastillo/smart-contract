@@ -2,10 +2,12 @@
 BlockAuth - NEO smart contract - https://blockauth.cc
 """
 
-VERSION = "1.0.0"
+VERSION = "2.0.0"
 
 from boa.blockchain.vm.Neo.Runtime import Log
 from boa.blockchain.vm.Neo.Storage import GetContext, Put
+from boa.blockchain.vm.Neo.Transaction import GetHash
+from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer
 from boa.code.builtins import concat
 
 def Main(key, challenge: str) -> int:
@@ -33,10 +35,26 @@ def Main(key, challenge: str) -> int:
 
     context = GetContext()
     storageKey = GenerateStorageKey(key, challenge)
+    
+    transactionHash = GetTransactionHash()
+    if len(transactionHash) == 0:
+        Log("Transaction hash has a length of 0")
+        return 103
 
-    Put(context, storageKey, challenge)
+    Put(context, storageKey, transactionHash)
 
     return 200
+
+def GetTransactionHash() -> str:
+    """Fetches the hash of the current transaction.
+
+    Return:
+        (str): hash of current transaction.
+    """
+
+    transaction = GetScriptContainer()
+    hash = GetHash(transaction)
+    return hash
 
 def GenerateStorageKey(s1, s2: str) -> str:
     """Concatenate arguments for use as storage key.
