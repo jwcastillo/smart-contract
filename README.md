@@ -23,7 +23,7 @@
 Please see [releases](https://github.com/blockauth/smart-contract/releases) for full details:
 
 ```
-8e3003c42c2785ff05ff706e77bf64e1ab38eff1
+2f228c37687d474d0a65d7d82d4ebf8a24a3fcbc
 ```
 
 ## Compile
@@ -39,11 +39,11 @@ make compile
 
 The smart contract takes two arguments:
 
-1. **key**: a UUID, used in the Storage key.
+1. **alpha**: a UUID, used as the first part of the key for `Storage.Put()`.
     - string
     - NEO parameter value: `07`
     - Example: `50801e46-a161-4297-8771-61dbebe9f19d`
-2. **challenge**: a UUID, used both in the Storage key and value.
+2. **beta**: a UUID, used as the second part of the key for `Storage.Put()`.
     - string
     - NEO parameter value: `07`
     - Example: `f88d2cda-2da2-4c6a-95d5-b31f06433604`
@@ -54,8 +54,8 @@ The smart contract returns an **integer** (parameter value `02`), which repesent
 invocation was a success. The following values can occur:
 
 - `200` - Success.
-- `101` - Error, as **key** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
-- `102` - Error, as **challenge** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
+- `101` - Error, as **alpha** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
+- `102` - Error, as **beta** parameter has an invalid [RFC UUID format](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
 - `103` - Error, the hash of the current transaction is invalid.
 
 ## Testing

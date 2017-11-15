@@ -2,7 +2,7 @@
 BlockAuth - NEO smart contract - https://blockauth.cc
 """
 
-VERSION = "2.0.0"
+VERSION = "3.0.0"
 
 from boa.blockchain.vm.Neo.Runtime import Log
 from boa.blockchain.vm.Neo.Storage import GetContext, Put
@@ -10,31 +10,31 @@ from boa.blockchain.vm.Neo.Transaction import GetHash
 from boa.blockchain.vm.System.ExecutionEngine import GetScriptContainer
 from boa.code.builtins import concat
 
-def Main(key, challenge: str) -> int:
+def Main(alpha, beta: str) -> int:
     """Entry point for the smart contract.
 
     Args:
-        key       (str):
-            UUID used within Storage key.
-        challenge (str):
-            UUID used within Storage key and value.
+        alpha (str):
+            UUID used as the first part of the key for Storage.Put().
+        beta (str):
+            UUID used as the second part of the key for Storage.Put().
 
     Return:
         (int): status code representing if execution was a success.
     """
 
-    if not IsUUID(key):
-        Log("'key' parameter has an invalid RFC UUID format")
-        Log(key)
+    if not IsUUID(alpha):
+        Log("'alpha' parameter has an invalid RFC UUID format")
+        Log(alpha)
         return 101
 
-    if not IsUUID(challenge):
-        Log("'challenge' parameter has an invalid RFC UUID format")
-        Log(challenge)
+    if not IsUUID(beta):
+        Log("'beta' parameter has an invalid RFC UUID format")
+        Log(beta)
         return 102
 
     context = GetContext()
-    storageKey = GenerateStorageKey(key, challenge)
+    storageKey = GenerateStorageKey(alpha, beta)
     
     transactionHash = GetTransactionHash()
     if len(transactionHash) == 0:
