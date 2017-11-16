@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://neo.org/">NEO</a> smart contract for 
-  <a href="https://blockauth.cc">BlockAuth</a>.
+  <a href="https://github.com/blockauth">BlockAuth</a>.
 </p>
 
 <p align="center">
@@ -18,9 +18,14 @@
   </a>
 </p>
 
+## What?
+
+- Official NEO smart contract for BlockAuth.
+- Written in Python.
+
 ## Contract Address
 
-Please see [releases](https://github.com/blockauth/smart-contract/releases) for full details:
+See [releases](https://github.com/blockauth/smart-contract/releases) for full details:
 
 ```
 2f228c37687d474d0a65d7d82d4ebf8a24a3fcbc
@@ -70,7 +75,7 @@ build /path/to/blockauth/smart-contract/src/BlockAuth.py test 0707 02 True ae6d0
 ---
 
 <p align="center">
-  Use <a href="https://blockauth.cc">BlockAuth</a> for simple passwordless authentication.
+  Check out the BlockAuth <a href="http://demo.blockauth.cc">Demo</a>.
   <br>
   🔐
 </p>
