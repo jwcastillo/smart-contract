@@ -1,7 +1,8 @@
 <p align="center">
   <img 
-    src="https://res.cloudinary.com/vidsy/image/upload/v1509658596/circle19_viaray.gif" 
-    width="300px"
+    src="http://res.cloudinary.com/vidsy/image/upload/v1512688296/ba-black-green_e3sqlz.svg" 
+    width="100px"
+    style="padding: 20px 0;"
   >
 </p>
 
@@ -9,23 +10,23 @@
 
 <p align="center">
   <a href="https://neo.org/">NEO</a> smart contract for 
-  <a href="https://github.com/blockauth">BlockAuth</a>.
+  <a href="https://neoauth.org">NeoAuth</a>.
 </p>
 
 <p align="center">
-  <a href="https://github.com/blockauth/smart-contract/releases">
-    <img src="https://img.shields.io/github/tag/blockauth/smart-contract.svg?style=flat">
+  <a href="https://github.com/neoauth/smart-contract/releases">
+    <img src="https://img.shields.io/github/tag/neoauth/smart-contract.svg?style=flat">
   </a>
 </p>
 
 ## What?
 
-- Official NEO smart contract for BlockAuth.
+- Official NEO smart contract for NeoAuth.
 - Written in Python.
 
 ## Contract Address
 
-See [releases](https://github.com/blockauth/smart-contract/releases) for full details:
+See [releases](https://github.com/neoauth/smart-contract/releases) for full details:
 
 ```
 2f228c37687d474d0a65d7d82d4ebf8a24a3fcbc
@@ -69,13 +70,13 @@ The smart contract can be tested locally using
 [neo-python](https://github.com/CityOfZion/neo-python). The following command can be used:
 
 ```
-build /path/to/blockauth/smart-contract/src/BlockAuth.py test 0707 02 True ae6d0adc-5168-4cc4-8ba0-741380e68e35 f88d2cda-2da2-4c6a-95d5-b31f06433604
+build /path/to/neoauth/smart-contract/src/NeoAuth.py test 0707 02 True ae6d0adc-5168-4cc4-8ba0-741380e68e35 f88d2cda-2da2-4c6a-95d5-b31f06433604
 ```
 
 ---
 
 <p align="center">
-  Check out the BlockAuth <a href="http://demo.blockauth.cc">Demo</a>.
+  Check out the NeoAuth <a href="https://demo.neoauth.org">Demo</a>.
   <br>
   🔐
 </p>

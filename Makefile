@@ -1,4 +1,4 @@
-FILE = "BlockAuth.py"
+FILE = "NeoAuth.py"
 ROOT = $(shell pwd)
 
 compile:

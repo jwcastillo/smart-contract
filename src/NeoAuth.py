@@ -1,5 +1,5 @@
 """
-BlockAuth - NEO smart contract - https://blockauth.cc
+NeoAuth - NEO smart contract - https://neoauth.org
 """
 
 VERSION = "3.0.0"
