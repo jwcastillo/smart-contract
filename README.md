@@ -76,7 +76,7 @@ build /path/to/neoauth/smart-contract/src/NeoAuth.py test 0707 02 True ae6d0adc-
 ---
 
 <p align="center">
-  Check out the NeoAuth <a href="https://demo.neoauth.org">Demo</a>.
+  Check out the NeoAuth <a href="http://demo.neoauth.org">Demo</a>.
   <br>
   🔐
 </p>
